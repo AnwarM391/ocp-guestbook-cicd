@@ -74,7 +74,6 @@ oc apply -f manifests/
 
 \## Author
 
-<img width="388" height="62" alt="image" src="https://github.com/user-attachments/assets/70176e24-6734-4730-a661-2580627a5829" />
 
 
 Anwar Mousa and Yaser Salha - DevOps 24
