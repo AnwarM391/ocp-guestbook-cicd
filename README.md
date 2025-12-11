@@ -1,7 +1,5 @@
 OpenShift Guestbook with CI/CD
-
 Cloud-native guestbook application with automated deployment to OpenShift.
-
 Architecture
 
 Frontend: Nginx (2 replicas)
@@ -18,8 +16,7 @@ GitHub Actions automatically builds and deploys to OpenShift on push to main.
 
 Deployment
 
-Automated via GitHub Actions.
-Manual deployment:
+Automated via GitHub Actions. Manual deployment:
 
 oc apply -f manifests/
 
