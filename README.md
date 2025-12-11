@@ -1,52 +1,25 @@
-# \# OpenShift Guestbook with CI/CD
+OpenShift Guestbook with CI/CD
+Cloud-native guestbook application with automated deployment to OpenShift.
+Architecture
 
-# 
+Frontend: Nginx (2 replicas)
 
-# Cloud-native guestbook application with automated deployment to OpenShift.
+Backend: Go REST API (2 replicas)
 
-# 
+Database: PostgreSQL (persistent storage)
 
-# \## Architecture
+Cache: Redis
 
-# 
+CI/CD Pipeline
 
-# \- \*\*Frontend\*\*: Nginx (2 replicas)
+GitHub Actions automatically builds and deploys to OpenShift on push to main.
 
-# \- \*\*Backend\*\*: Go REST API (2 replicas)
+Deployment
 
-# \- \*\*Database\*\*: PostgreSQL (persistent storage)
+Automated via GitHub Actions. Manual deployment:
 
-# \- \*\*Cache\*\*: Redis
+oc apply -f manifests/
 
-# 
+Author
 
-# \## CI/CD Pipeline
-
-# 
-
-# GitHub Actions automatically builds and deploys to OpenShift on push to `main`.
-
-# 
-
-# 
-
-# \## Deployment
-
-# 
-
-# Automated via GitHub Actions. Manual deployment:
-
-# 
-
-# oc apply -f manifests/
-
-# 
-
-# \## Author
-
-# 
-
-# Anwar Mousa, Vineeta and Yaser Salha - DevOps 24
-
-# 
-
+Anwar Mousa, Vineeta and Yaser Salha – DevOps 24
