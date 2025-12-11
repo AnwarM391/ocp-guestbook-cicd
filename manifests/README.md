@@ -1,9 +1,3 @@
-\# Kubernetes Manifests
-
-
-
-These manifests are already applied to OpenShift.
-
 The CI/CD pipeline only rebuilds containers and restarts deployments.
 
 
@@ -19,8 +13,4 @@ oc apply -f backend.yaml
 oc apply -f frontend.yaml
 
 oc apply -f route.yaml
-
-
-
-
 
