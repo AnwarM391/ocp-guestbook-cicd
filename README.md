@@ -44,7 +44,6 @@
 
 # \## Author
 
-# 
 # Anwar Mousa, Vineeta and Yaser Salha - DevOps 24
 
 # 
