@@ -76,5 +76,5 @@ oc apply -f manifests/
 
 
 
-Yaser Salha - DevOps 24
+Anwar Mousa and Yaser Salha - DevOps 24
 
