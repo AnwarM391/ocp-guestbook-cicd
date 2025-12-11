@@ -46,7 +46,7 @@
 
 # 
 
-# Anwar Mosa, Vineeta and Yaser Salha - DevOps 24
+# Anwar Mousa, Vineeta and Yaser Salha - DevOps 24
 
 # 
 
