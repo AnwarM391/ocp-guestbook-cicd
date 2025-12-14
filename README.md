@@ -16,6 +16,10 @@ Working together on this project was really fun! It felt like working on a real 
 
 **Check it out here:** https://frontend-ysalha-dev.apps.rm3.7wse.p1.openshiftapps.com
 
+## Application UI
+
+![alt text](image.png)
+
 ## How It Works
 ```
 GitHub Push → GitHub Actions → Build Containers → Push to GHCR → Deploy to OpenShift
