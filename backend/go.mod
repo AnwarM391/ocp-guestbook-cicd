@@ -1,6 +1,6 @@
 module github.com/jonasbjork/guestbook-app
 
-go 1.24
+go 1.23
 
 require (
 	github.com/go-redis/redis/v8 v8.11.5
