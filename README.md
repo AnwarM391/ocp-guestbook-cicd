@@ -41,7 +41,7 @@ GitHub Push → GitHub Actions → Build Containers → Push to GHCR → Deploy 
 
 Pipeline runs automatically on:
 
--   Push to  `main`  branch
+-   Push to  `main`   branch
 -   Pull requests to  `main`  branch
 
 ### Pipeline Steps
