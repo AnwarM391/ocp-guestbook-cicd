@@ -8,8 +8,6 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME_BACKEND: ${{ github.repository }}/backend
-  IMAGE_NAME_FRONTEND: ${{ github.repository }}/frontend
 
 jobs:
   build-and-deploy:
@@ -23,6 +21,11 @@ jobs:
       uses: actions/checkout@v4
       with:
         fetch-depth: 2
+
+    - name: Set lowercase repository name
+      id: repo
+      run: |
+        echo "repository_lowercase=$(echo '${{ github.repository }}' | tr '[:upper:]' '[:lower:]')" >> $GITHUB_OUTPUT
 
     - name: Detect changed components
       id: changes
@@ -60,7 +63,7 @@ jobs:
       id: meta-backend
       uses: docker/metadata-action@v5
       with:
-        images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_BACKEND }}
+        images: ${{ env.REGISTRY }}/${{ steps.repo.outputs.repository_lowercase }}/backend
         tags: |
           type=sha,prefix={{branch}}-
           type=raw,value=latest
@@ -80,7 +83,7 @@ jobs:
       id: meta-frontend
       uses: docker/metadata-action@v5
       with:
-        images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_FRONTEND }}
+        images: ${{ env.REGISTRY }}/${{ steps.repo.outputs.repository_lowercase }}/frontend
         tags: |
           type=sha,prefix={{branch}}-
           type=raw,value=latest
@@ -121,14 +124,14 @@ jobs:
     - name: Update Backend deployment
       if: steps.changes.outputs.backend_changed == 'true'
       run: |
-        oc set image deployment/backend backend=${{ env.REGISTRY }}/${{ env.IMAGE_NAME_BACKEND }}:latest
+        oc set image deployment/backend backend=${{ env.REGISTRY }}/${{ steps.repo.outputs.repository_lowercase }}/backend:latest
         oc rollout restart deployment/backend
         oc rollout status deployment/backend
 
     - name: Update Frontend deployment
       if: steps.changes.outputs.frontend_changed == 'true'
       run: |
-        oc set image deployment/frontend frontend=${{ env.REGISTRY }}/${{ env.IMAGE_NAME_FRONTEND }}:latest
+        oc set image deployment/frontend frontend=${{ env.REGISTRY }}/${{ steps.repo.outputs.repository_lowercase }}/frontend:latest
         oc rollout restart deployment/frontend
         oc rollout status deployment/frontend
 
