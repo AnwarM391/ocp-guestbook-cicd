@@ -1,0 +1,21 @@
+# Backend ConfigMap
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: backend-config
+  labels:
+    app: guestbook
+    tier: backend
+data:
+  # Application settings
+  LOG_LEVEL: "info"
+  MAX_CONNECTIONS: "100"
+  CACHE_TTL: "300"
+  API_TIMEOUT: "30"
+  
+  # Feature flags
+  ENABLE_METRICS: "true"
+  ENABLE_TRACING: "false"
+  
+  # Note: When this ConfigMap is updated, deployments must be restarted
+  # Use: oc rollout restart deployment/backend
