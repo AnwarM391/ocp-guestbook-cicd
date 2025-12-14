@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gästbok - OpenShift Lab</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        
+        .stats {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            color: white;
+            display: flex;
+            justify-content: space-around;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 2em;
+            font-weight: bold;
+        }
+        
+        .stat-label {
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+            font-weight: 600;
+        }
+        
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: transform 0.2s;
+            width: 100%;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        .entries {
+            margin-top: 30px;
+        }
+        
+        .entry {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+        
+        .entry:hover {
+            transform: translateX(5px);
+        }
+        
+        .entry-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .entry-name {
+            font-weight: bold;
+            color: #667eea;
+            font-size: 1.1em;
+        }
+        
+        .entry-date {
+            color: #999;
+            font-size: 0.9em;
+        }
+        
+        .entry-message {
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .cache-indicator {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            margin-left: 10px;
+        }
+        
+        .cache-hit {
+            background: #4caf50;
+            color: white;
+        }
+        
+        .cache-miss {
+            background: #ff9800;
+            color: white;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: white;
+            font-size: 1.2em;
+        }
+        
+        .error {
+            background: #f44336;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📝 Gästbok</h1>
+            <p>OpenShift Lab - Distribuerad Applikation</p>
+        </div>
+        
+        <div class="stats" id="stats">
+            <div class="stat-item">
+                <div class="stat-value" id="totalEntries">-</div>
+                <div class="stat-label">Inlägg</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="cacheStatus">-</div>
+                <div class="stat-label">Cache</div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2>Skriv i gästboken</h2>
+            <form id="entryForm">
+                <div class="form-group">
+                    <label for="name">Namn:</label>
+                    <input type="text" id="name" name="name" required placeholder="Ditt namn">
+                </div>
+                <div class="form-group">
+                    <label for="message">Meddelande:</label>
+                    <textarea id="message" name="message" required placeholder="Skriv ditt meddelande här..."></textarea>
+                </div>
+                <button type="submit">Skicka inlägg</button>
+            </form>
+        </div>
+        
+        <div class="entries">
+            <h2 style="color: white; margin-bottom: 20px;">Senaste inläggen</h2>
+            <div id="entriesList" class="loading">Laddar inlägg...</div>
+        </div>
+    </div>
+
+    <script>
+        async function loadEntries() {
+            try {
+                const response = await fetch('/api/entries');
+                const entries = await response.json();
+                const cacheStatus = response.headers.get('X-Cache');
+                
+                const entriesList = document.getElementById('entriesList');
+                
+                if (entries.length === 0) {
+                    entriesList.innerHTML = '<div class="entry">Inga inlägg än. Var den första att skriva!</div>';
+                    return;
+                }
+                
+                entriesList.innerHTML = entries.map(entry => `
+                    <div class="entry">
+                        <div class="entry-header">
+                            <span class="entry-name">${escapeHtml(entry.name)}</span>
+                            <span class="entry-date">
+                                ${new Date(entry.created_at).toLocaleDateString('sv-SE')} 
+                                ${new Date(entry.created_at).toLocaleTimeString('sv-SE')}
+                            </span>
+                        </div>
+                        <div class="entry-message">${escapeHtml(entry.message)}</div>
+                    </div>
+                `).join('');
+                
+                // Uppdatera cache-indikator
+                document.getElementById('cacheStatus').textContent = cacheStatus === 'HIT' ? '✓' : '○';
+                
+            } catch (error) {
+                console.error('Fel vid laddning av inlägg:', error);
+                document.getElementById('entriesList').innerHTML = 
+                    '<div class="error">Kunde inte ladda inlägg. Kontrollera att backend-tjänsten körs.</div>';
+            }
+        }
+        
+        // Ladda statistik
+        async function loadStats() {
+            try {
+                const response = await fetch('/api/stats');
+                const stats = await response.json();
+                document.getElementById('totalEntries').textContent = stats.total_entries_db || 0;
+            } catch (error) {
+                console.error('Fel vid laddning av statistik:', error);
+            }
+        }
+        
+        // Skicka nytt inlägg
+        document.getElementById('entryForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const name = document.getElementById('name').value;
+            const message = document.getElementById('message').value;
+            
+            try {
+                const response = await fetch('/api/entries', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ name, message })
+                });
+                
+                if (response.ok) {
+                    document.getElementById('entryForm').reset();
+                    await loadEntries();
+                    await loadStats();
+                } else {
+                    alert('Fel vid skapande av inlägg');
+                }
+            } catch (error) {
+                console.error('Fel:', error);
+                alert('Kunde inte skicka inlägg. Kontrollera att backend-tjänsten körs.');
+            }
+        });
+        
+        // Hjälpfunktion för att undvika XSS
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        // Ladda data vid start
+        loadEntries();
+        loadStats();
+        
+        // Uppdatera var 30:e sekund
+        setInterval(() => {
+            loadEntries();
+            loadStats();
+        }, 30000);
+    </script>
+</body>
+</html>
