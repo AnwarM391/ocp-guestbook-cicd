@@ -22,7 +22,7 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
       with:
-        fetch-depth: 0
+        fetch-depth: 2
 
     - name: Detect changed components
       id: changes
@@ -121,16 +121,16 @@ jobs:
     - name: Update Backend deployment
       if: steps.changes.outputs.backend_changed == 'true'
       run: |
-        oc set image deployment/backend backend=${{ env.REGISTRY }}/${{ env.IMAGE_NAME_BACKEND }}:latest -n ${{ secrets.OPENSHIFT_PROJECT }}
-        oc rollout restart deployment/backend -n ${{ secrets.OPENSHIFT_PROJECT }}
-        oc rollout status deployment/backend -n ${{ secrets.OPENSHIFT_PROJECT }}
+        oc set image deployment/backend backend=${{ env.REGISTRY }}/${{ env.IMAGE_NAME_BACKEND }}:latest
+        oc rollout restart deployment/backend
+        oc rollout status deployment/backend
 
     - name: Update Frontend deployment
       if: steps.changes.outputs.frontend_changed == 'true'
       run: |
-        oc set image deployment/frontend frontend=${{ env.REGISTRY }}/${{ env.IMAGE_NAME_FRONTEND }}:latest -n ${{ secrets.OPENSHIFT_PROJECT }}
-        oc rollout restart deployment/frontend -n ${{ secrets.OPENSHIFT_PROJECT }}
-        oc rollout status deployment/frontend -n ${{ secrets.OPENSHIFT_PROJECT }}
+        oc set image deployment/frontend frontend=${{ env.REGISTRY }}/${{ env.IMAGE_NAME_FRONTEND }}:latest
+        oc rollout restart deployment/frontend
+        oc rollout status deployment/frontend
 
     - name: Verify deployment
       if: steps.changes.outputs.backend_changed == 'true' || steps.changes.outputs.frontend_changed == 'true' || steps.changes.outputs.manifests_changed == 'true'
