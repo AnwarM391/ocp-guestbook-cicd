@@ -12,43 +12,158 @@
         }
         
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
+            background: #f8f9fa;
             min-height: 100vh;
-            padding: 20px;
+            padding: 40px 20px;
+            color: #1a1a1a;
+            line-height: 1.6;
         }
         
         .container {
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
         }
         
         .header {
-            text-align: center;
-            color: white;
-            margin-bottom: 30px;
+            margin-bottom: 48px;
         }
         
         .header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            font-size: 2em;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 8px;
+            letter-spacing: -0.02em;
         }
         
         .header p {
-            font-size: 1.1em;
-            opacity: 0.9;
+            font-size: 0.95em;
+            color: #6c757d;
+            font-weight: 400;
+        }
+        
+        .ci-banner {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 8px;
+            padding: 16px 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .ci-banner h2 {
+            font-size: 1em;
+            font-weight: 600;
+            color: #856404;
+            margin: 0;
+        }
+        
+        .deployment-info {
+            margin-top: 8px;
+            font-size: 0.875em;
+            color: #856404;
+        }
+        
+        .version-history {
+            background: white;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .version-history h3 {
+            font-size: 1em;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .version-toggle {
+            background: none;
+            border: none;
+            color: #495057;
+            cursor: pointer;
+            padding: 4px 8px;
+            font-size: 0.875em;
+            border-radius: 4px;
+            transition: background 0.2s;
+            width: auto;
+        }
+        
+        .version-toggle:hover {
+            background: #f8f9fa;
+        }
+        
+        .version-list {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+        
+        .version-list.show {
+            max-height: 500px;
+        }
+        
+        .version-item {
+            padding: 12px 16px;
+            margin: 8px 0;
+            background: #f8f9fa;
+            border-radius: 6px;
+            font-size: 0.875em;
+            color: #495057;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .version-item.current {
+            background: #d4edda;
+            color: #155724;
+            font-weight: 500;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .version-timestamp {
+            font-weight: 500;
+        }
+        
+        .version-badge {
+            background: #6c757d;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.75em;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        
+        .version-item.current .version-badge {
+            background: #28a745;
+        }
+        
+        .no-history {
+            text-align: center;
+            color: #6c757d;
+            padding: 20px;
+            font-style: italic;
         }
         
         .stats {
-            background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 20px;
-            color: white;
-            display: flex;
-            justify-content: space-around;
+            background: white;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 32px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 32px;
         }
         
         .stat-item {
@@ -57,20 +172,33 @@
         
         .stat-value {
             font-size: 2em;
-            font-weight: bold;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 4px;
         }
         
         .stat-label {
-            font-size: 0.9em;
-            opacity: 0.8;
+            font-size: 0.875em;
+            color: #6c757d;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 500;
         }
         
         .card {
             background: white;
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            margin-bottom: 20px;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 32px;
+            margin-bottom: 32px;
+        }
+        
+        .card h2 {
+            font-size: 1.25em;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 24px;
+            letter-spacing: -0.01em;
         }
         
         .form-group {
@@ -79,121 +207,150 @@
         
         label {
             display: block;
-            margin-bottom: 5px;
-            color: #333;
-            font-weight: 600;
+            margin-bottom: 8px;
+            color: #495057;
+            font-weight: 500;
+            font-size: 0.875em;
         }
         
         input, textarea {
             width: 100%;
-            padding: 12px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 1em;
-            transition: border-color 0.3s;
+            padding: 12px 16px;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            font-size: 0.95em;
+            transition: all 0.2s;
+            font-family: inherit;
+            background: white;
         }
         
         input:focus, textarea:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: #495057;
+            box-shadow: 0 0 0 3px rgba(73, 80, 87, 0.1);
         }
         
         textarea {
             resize: vertical;
-            min-height: 100px;
+            min-height: 120px;
         }
         
-        button {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        button:not(.version-toggle) {
+            background: #1a1a1a;
             color: white;
             border: none;
-            padding: 12px 30px;
-            border-radius: 8px;
-            font-size: 1.1em;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-size: 0.95em;
+            font-weight: 500;
             cursor: pointer;
-            transition: transform 0.2s;
+            transition: all 0.2s;
             width: 100%;
         }
         
-        button:hover {
-            transform: translateY(-2px);
+        button:not(.version-toggle):hover {
+            background: #343a40;
         }
         
-        button:active {
-            transform: translateY(0);
+        button:not(.version-toggle):active {
+            transform: scale(0.98);
         }
         
         .entries {
-            margin-top: 30px;
+            margin-top: 48px;
+        }
+        
+        .entries > h2 {
+            font-size: 1.25em;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 20px;
+            letter-spacing: -0.01em;
         }
         
         .entry {
             background: white;
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 15px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            transition: transform 0.2s;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 16px;
+            transition: all 0.2s;
         }
         
         .entry:hover {
-            transform: translateX(5px);
+            border-color: #dee2e6;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
         }
         
         .entry-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
+            gap: 16px;
         }
         
         .entry-name {
-            font-weight: bold;
-            color: #667eea;
-            font-size: 1.1em;
+            font-weight: 600;
+            color: #1a1a1a;
+            font-size: 1em;
         }
         
         .entry-date {
-            color: #999;
-            font-size: 0.9em;
+            color: #6c757d;
+            font-size: 0.875em;
+            white-space: nowrap;
         }
         
         .entry-message {
-            color: #333;
+            color: #495057;
             line-height: 1.6;
-        }
-        
-        .cache-indicator {
-            display: inline-block;
-            padding: 3px 8px;
-            border-radius: 4px;
-            font-size: 0.8em;
-            margin-left: 10px;
-        }
-        
-        .cache-hit {
-            background: #4caf50;
-            color: white;
-        }
-        
-        .cache-miss {
-            background: #ff9800;
-            color: white;
         }
         
         .loading {
             text-align: center;
-            padding: 40px;
-            color: white;
-            font-size: 1.2em;
+            padding: 48px;
+            color: #6c757d;
+            font-size: 0.95em;
         }
         
         .error {
-            background: #f44336;
-            color: white;
-            padding: 15px;
-            border-radius: 8px;
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            padding: 16px;
+            border-radius: 6px;
             margin-bottom: 20px;
+            font-size: 0.95em;
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 24px 16px;
+            }
+            
+            .header h1 {
+                font-size: 1.75em;
+            }
+            
+            .card {
+                padding: 24px;
+            }
+            
+            .stats {
+                gap: 24px;
+            }
+            
+            .entry-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+            
+            .version-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
         }
     </style>
 </head>
@@ -202,6 +359,24 @@
         <div class="header">
             <h1>📝 Gästbok</h1>
             <p>OpenShift Lab - Distribuerad Applikation</p>
+            <div class="ci-banner">
+                <h2>🚀 CI/CD Deployment</h2>
+                <div class="deployment-info">
+                    Byggd: <span id="buildTimestamp">__BUILD_TIMESTAMP__</span>
+                </div>
+            </div>
+            
+            <div class="version-history">
+                <h3>
+                    <span>Versionshistorik</span>
+                    <button class="version-toggle" id="versionToggle" onclick="toggleVersionHistory()">
+                        Visa ▼
+                    </button>
+                </h3>
+                <div class="version-list" id="versionList">
+                    <div class="no-history">Laddar historik...</div>
+                </div>
+            </div>
         </div>
         
         <div class="stats" id="stats">
@@ -213,6 +388,10 @@
                 <div class="stat-value" id="cacheStatus">-</div>
                 <div class="stat-label">Cache</div>
             </div>
+            <div class="stat-item">
+                <div class="stat-value" id="buildVersion">-</div>
+                <div class="stat-label">Version</div>
+            </div>
         </div>
         
         <div class="card">
@@ -223,20 +402,149 @@
                     <input type="text" id="name" name="name" required placeholder="Ditt namn">
                 </div>
                 <div class="form-group">
-                    <label for="message">Medhgkdelande:</label>
+                    <label for="message">Meddelande:</label>
                     <textarea id="message" name="message" required placeholder="Skriv ditt meddelande här..."></textarea>
                 </div>
-                <button type="submit">Skicka inlägg 66</button>
+                <button type="submit">Skicka inlägg</button>
             </form>
         </div>
         
         <div class="entries">
-            <h2 style="color: white; margin-bottom: 20px;">Senaste  b inläggen</h2>
+            <h2>Senaste inläggen</h2>
             <div id="entriesList" class="loading">Laddar inlägg...</div>
         </div>
     </div>
 
     <script>
+        const VERSION_STORAGE_KEY = 'guestbook_version_history';
+        const MAX_VERSIONS = 5;
+        
+        function getBuildTimestamp() {
+            const buildElement = document.getElementById('buildTimestamp');
+            if (!buildElement) return null;
+            
+            const timestamp = buildElement.textContent.trim();
+            
+            if (timestamp === '__BUILD_TIMESTAMP__' || 
+                timestamp === '' || 
+                timestamp.startsWith('__') || 
+                timestamp.endsWith('__')) {
+                return null;
+            }
+            
+            return timestamp;
+        }
+        
+        function loadVersionHistory() {
+            try {
+                const stored = sessionStorage.getItem(VERSION_STORAGE_KEY);
+                return stored ? JSON.parse(stored) : [];
+            } catch (e) {
+                console.error('Error loading version history:', e);
+                return [];
+            }
+        }
+        
+        function saveVersionHistory(history) {
+            try {
+                sessionStorage.setItem(VERSION_STORAGE_KEY, JSON.stringify(history));
+            } catch (e) {
+                console.error('Error saving version history:', e);
+            }
+        }
+        
+        function trackBuildVersion() {
+            const currentBuild = getBuildTimestamp();
+            
+            if (!currentBuild) {
+                displayVersionHistory([], null);
+                return;
+            }
+            
+            let versionHistory = loadVersionHistory();
+            const existingIndex = versionHistory.findIndex(v => v.timestamp === currentBuild);
+            
+            if (existingIndex === -1) {
+                versionHistory.unshift({
+                    timestamp: currentBuild,
+                    visitedAt: new Date().toISOString(),
+                    visitCount: 1
+                });
+                
+                if (versionHistory.length > MAX_VERSIONS) {
+                    versionHistory = versionHistory.slice(0, MAX_VERSIONS);
+                }
+                
+                saveVersionHistory(versionHistory);
+            } else {
+                versionHistory[existingIndex].visitCount++;
+                versionHistory[existingIndex].lastVisitedAt = new Date().toISOString();
+                saveVersionHistory(versionHistory);
+            }
+            
+            displayVersionHistory(versionHistory, currentBuild);
+            updateVersionStat(versionHistory.length);
+        }
+        
+        function displayVersionHistory(versions, currentBuild) {
+            const versionList = document.getElementById('versionList');
+            if (!versionList) return;
+            
+            if (versions.length === 0) {
+                versionList.innerHTML = '<div class="no-history">Ingen versionshistorik tillgänglig än.<br><small>Historik visas efter att flera versioner har deployats.</small></div>';
+                return;
+            }
+            
+            versionList.innerHTML = versions.map(version => {
+                const isCurrent = version.timestamp === currentBuild;
+                const visitDate = new Date(version.visitedAt);
+                const relativeTime = getRelativeTime(visitDate);
+                
+                return `
+                    <div class="version-item ${isCurrent ? 'current' : ''}">
+                        <span class="version-timestamp">${escapeHtml(version.timestamp)}</span>
+                        <span class="version-badge">${isCurrent ? '✓ Aktuell' : relativeTime}</span>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        function getRelativeTime(date) {
+            const now = new Date();
+            const diffMs = now - date;
+            const diffMins = Math.floor(diffMs / 60000);
+            const diffHours = Math.floor(diffMs / 3600000);
+            const diffDays = Math.floor(diffMs / 86400000);
+            
+            if (diffMins < 1) return 'Just nu';
+            if (diffMins < 60) return `${diffMins} min sedan`;
+            if (diffHours < 24) return `${diffHours}h sedan`;
+            if (diffDays === 1) return 'Igår';
+            return `${diffDays} dagar sedan`;
+        }
+        
+        function updateVersionStat(count) {
+            const versionElement = document.getElementById('buildVersion');
+            if (versionElement) {
+                versionElement.textContent = count > 0 ? count : '-';
+            }
+        }
+        
+        function toggleVersionHistory() {
+            const versionList = document.getElementById('versionList');
+            const toggleButton = document.getElementById('versionToggle');
+            
+            if (!versionList || !toggleButton) return;
+            
+            if (versionList.classList.contains('show')) {
+                versionList.classList.remove('show');
+                toggleButton.textContent = 'Visa ▼';
+            } else {
+                versionList.classList.add('show');
+                toggleButton.textContent = 'Dölj ▲';
+            }
+        }
+        
         async function loadEntries() {
             try {
                 const response = await fetch('/api/entries');
@@ -263,8 +571,10 @@
                     </div>
                 `).join('');
                 
-                // Uppdatera cache-indikator
-                document.getElementById('cacheStatus').textContent = cacheStatus === 'HIT' ? '✓' : '○';
+                const cacheStatusElement = document.getElementById('cacheStatus');
+                if (cacheStatusElement) {
+                    cacheStatusElement.textContent = cacheStatus === 'HIT' ? '✓' : '○';
+                }
                 
             } catch (error) {
                 console.error('Fel vid laddning av inlägg:', error);
@@ -273,64 +583,72 @@
             }
         }
         
-        // Ladda statistik
         async function loadStats() {
             try {
                 const response = await fetch('/api/stats');
                 const stats = await response.json();
-                document.getElementById('totalEntries').textContent = stats.total_entries_db || 0;
+                const totalEntriesElement = document.getElementById('totalEntries');
+                if (totalEntriesElement) {
+                    totalEntriesElement.textContent = stats.total_entries_db || 0;
+                }
             } catch (error) {
                 console.error('Fel vid laddning av statistik:', error);
             }
         }
         
-        // Skicka nytt inlägg
-        document.getElementById('entryForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            const name = document.getElementById('name').value;
-            const message = document.getElementById('message').value;
-            
-            try {
-                const response = await fetch('/api/entries', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ name, message })
-                });
-                
-                if (response.ok) {
-                    document.getElementById('entryForm').reset();
-                    await loadEntries();
-                    await loadStats();
-                } else {
-                    alert('Fel vid skapande av inlägg');
-                }
-            } catch (error) {
-                console.error('Fel:', error);
-                alert('Kunde inte skicka inlägg. Kontrollera att backend-tjänsten körs.');
-            }
-        });
-        
-        // Hjälpfunktion för att undvika XSS
         function escapeHtml(text) {
             const div = document.createElement('div');
             div.textContent = text;
             return div.innerHTML;
         }
         
-        // Ladda data vid start
-        loadEntries();
-        loadStats();
+        const entryForm = document.getElementById('entryForm');
+        if (entryForm) {
+            entryForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                const name = document.getElementById('name').value;
+                const message = document.getElementById('message').value;
+                
+                try {
+                    const response = await fetch('/api/entries', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ name, message })
+                    });
+                    
+                    if (response.ok) {
+                        entryForm.reset();
+                        await loadEntries();
+                        await loadStats();
+                    } else {
+                        alert('Fel vid skapande av inlägg');
+                    }
+                } catch (error) {
+                    console.error('Fel:', error);
+                    alert('Kunde inte skicka inlägg. Kontrollera att backend-tjänsten körs.');
+                }
+            });
+        }
         
-        // Uppdatera var 30:e sekund
-        setInterval(() => {
+        function initialize() {
+            trackBuildVersion();
             loadEntries();
             loadStats();
-        }, 30000);
+            
+            setInterval(() => {
+                loadEntries();
+                loadStats();
+            }, 30000);
+        }
+        
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initialize);
+        } else {
+            initialize();
+        }
     </script>
 </body>
-
 </html>
-
