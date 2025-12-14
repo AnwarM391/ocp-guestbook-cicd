@@ -1,0 +1,27 @@
+# Multi-stage build for Go application
+FROM golang:1.23-alpine AS builder
+
+WORKDIR /build
+
+# Copy dependency files
+COPY go.mod main.go ./
+
+# Download and build
+RUN go mod download && \
+    go mod tidy && \
+    CGO_ENABLED=0 GOOS=linux go build -o guestbook-api .
+
+# Runtime stage
+FROM alpine:latest
+
+# Install CA certificates
+RUN apk --no-cache add ca-certificates
+
+WORKDIR /app
+
+# Copy binary from builder
+COPY --from=builder /build/guestbook-api .
+
+EXPOSE 8080
+
+CMD ["./guestbook-api"]
