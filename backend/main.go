@@ -30,8 +30,7 @@ type App struct {
 
 func main() {
 	app := &App{Ctx: context.Background()}
-	// Barbor
-
+	
 	// Initiera databas
 	dbHost := getEnv("DB_HOST", "localhost")
 	dbPort := getEnv("DB_PORT", "5432")
