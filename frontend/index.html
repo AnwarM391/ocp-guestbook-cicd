@@ -65,96 +65,6 @@
             color: #856404;
         }
         
-        .version-history {
-            background: white;
-            border: 1px solid #e9ecef;
-            border-radius: 8px;
-            padding: 20px;
-            margin: 20px 0;
-        }
-        
-        .version-history h3 {
-            font-size: 1em;
-            font-weight: 600;
-            color: #1a1a1a;
-            margin-bottom: 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .version-toggle {
-            background: none;
-            border: none;
-            color: #495057;
-            cursor: pointer;
-            padding: 4px 8px;
-            font-size: 0.875em;
-            border-radius: 4px;
-            transition: background 0.2s;
-            width: auto;
-        }
-        
-        .version-toggle:hover {
-            background: #f8f9fa;
-        }
-        
-        .version-list {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease-out;
-        }
-        
-        .version-list.show {
-            max-height: 500px;
-        }
-        
-        .version-item {
-            padding: 12px 16px;
-            margin: 8px 0;
-            background: #f8f9fa;
-            border-radius: 6px;
-            font-size: 0.875em;
-            color: #495057;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-        
-        .version-item.current {
-            background: #d4edda;
-            color: #155724;
-            font-weight: 500;
-            border: 1px solid #c3e6cb;
-        }
-        
-        .version-timestamp {
-            font-weight: 500;
-        }
-        
-        .version-badge {
-            background: #6c757d;
-            color: white;
-            padding: 4px 12px;
-            border-radius: 12px;
-            font-size: 0.75em;
-            font-weight: 600;
-            white-space: nowrap;
-        }
-        
-        .version-item.current .version-badge {
-            background: #28a745;
-        }
-        
-        .no-history {
-            text-align: center;
-            color: #6c757d;
-            padding: 20px;
-            font-style: italic;
-        }
-        
         .stats {
             background: white;
             border: 1px solid #e9ecef;
@@ -235,7 +145,7 @@
             min-height: 120px;
         }
         
-        button:not(.version-toggle) {
+        button {
             background: #1a1a1a;
             color: white;
             border: none;
@@ -248,11 +158,11 @@
             width: 100%;
         }
         
-        button:not(.version-toggle):hover {
+        button:hover {
             background: #343a40;
         }
         
-        button:not(.version-toggle):active {
+        button:active {
             transform: scale(0.98);
         }
         
@@ -346,11 +256,6 @@
                 align-items: flex-start;
                 gap: 8px;
             }
-            
-            .version-item {
-                flex-direction: column;
-                align-items: flex-start;
-            }
         }
     </style>
 </head>
@@ -365,18 +270,6 @@
                     Byggd: <span id="buildTimestamp">__BUILD_TIMESTAMP__</span>
                 </div>
             </div>
-            
-            <div class="version-history">
-                <h3>
-                    <span>Versionshistorik</span>
-                    <button class="version-toggle" id="versionToggle" onclick="toggleVersionHistory()">
-                        Visa ▼
-                    </button>
-                </h3>
-                <div class="version-list" id="versionList">
-                    <div class="no-history">Laddar historik...</div>
-                </div>
-            </div>
         </div>
         
         <div class="stats" id="stats">
@@ -389,8 +282,8 @@
                 <div class="stat-label">Cache</div>
             </div>
             <div class="stat-item">
-                <div class="stat-value" id="buildVersion">-</div>
-                <div class="stat-label">Version</div>
+                <div class="stat-value" id="backendStatus">-</div>
+                <div class="stat-label">Status</div>
             </div>
         </div>
         
@@ -416,135 +309,6 @@
     </div>
 
     <script>
-        const VERSION_STORAGE_KEY = 'guestbook_version_history';
-        const MAX_VERSIONS = 5;
-        
-        function getBuildTimestamp() {
-            const buildElement = document.getElementById('buildTimestamp');
-            if (!buildElement) return null;
-            
-            const timestamp = buildElement.textContent.trim();
-            
-            if (timestamp === '__BUILD_TIMESTAMP__' || 
-                timestamp === '' || 
-                timestamp.startsWith('__') || 
-                timestamp.endsWith('__')) {
-                return null;
-            }
-            
-            return timestamp;
-        }
-        
-        function loadVersionHistory() {
-            try {
-                const stored = sessionStorage.getItem(VERSION_STORAGE_KEY);
-                return stored ? JSON.parse(stored) : [];
-            } catch (e) {
-                console.error('Error loading version history:', e);
-                return [];
-            }
-        }
-        
-        function saveVersionHistory(history) {
-            try {
-                sessionStorage.setItem(VERSION_STORAGE_KEY, JSON.stringify(history));
-            } catch (e) {
-                console.error('Error saving version history:', e);
-            }
-        }
-        
-        function trackBuildVersion() {
-            const currentBuild = getBuildTimestamp();
-            
-            if (!currentBuild) {
-                displayVersionHistory([], null);
-                return;
-            }
-            
-            let versionHistory = loadVersionHistory();
-            const existingIndex = versionHistory.findIndex(v => v.timestamp === currentBuild);
-            
-            if (existingIndex === -1) {
-                versionHistory.unshift({
-                    timestamp: currentBuild,
-                    visitedAt: new Date().toISOString(),
-                    visitCount: 1
-                });
-                
-                if (versionHistory.length > MAX_VERSIONS) {
-                    versionHistory = versionHistory.slice(0, MAX_VERSIONS);
-                }
-                
-                saveVersionHistory(versionHistory);
-            } else {
-                versionHistory[existingIndex].visitCount++;
-                versionHistory[existingIndex].lastVisitedAt = new Date().toISOString();
-                saveVersionHistory(versionHistory);
-            }
-            
-            displayVersionHistory(versionHistory, currentBuild);
-            updateVersionStat(versionHistory.length);
-        }
-        
-        function displayVersionHistory(versions, currentBuild) {
-            const versionList = document.getElementById('versionList');
-            if (!versionList) return;
-            
-            if (versions.length === 0) {
-                versionList.innerHTML = '<div class="no-history">Ingen versionshistorik tillgänglig än.<br><small>Historik visas efter att flera versioner har deployats.</small></div>';
-                return;
-            }
-            
-            versionList.innerHTML = versions.map(version => {
-                const isCurrent = version.timestamp === currentBuild;
-                const visitDate = new Date(version.visitedAt);
-                const relativeTime = getRelativeTime(visitDate);
-                
-                return `
-                    <div class="version-item ${isCurrent ? 'current' : ''}">
-                        <span class="version-timestamp">${escapeHtml(version.timestamp)}</span>
-                        <span class="version-badge">${isCurrent ? '✓ Aktuell' : relativeTime}</span>
-                    </div>
-                `;
-            }).join('');
-        }
-        
-        function getRelativeTime(date) {
-            const now = new Date();
-            const diffMs = now - date;
-            const diffMins = Math.floor(diffMs / 60000);
-            const diffHours = Math.floor(diffMs / 3600000);
-            const diffDays = Math.floor(diffMs / 86400000);
-            
-            if (diffMins < 1) return 'Just nu';
-            if (diffMins < 60) return `${diffMins} min sedan`;
-            if (diffHours < 24) return `${diffHours}h sedan`;
-            if (diffDays === 1) return 'Igår';
-            return `${diffDays} dagar sedan`;
-        }
-        
-        function updateVersionStat(count) {
-            const versionElement = document.getElementById('buildVersion');
-            if (versionElement) {
-                versionElement.textContent = count > 0 ? count : '-';
-            }
-        }
-        
-        function toggleVersionHistory() {
-            const versionList = document.getElementById('versionList');
-            const toggleButton = document.getElementById('versionToggle');
-            
-            if (!versionList || !toggleButton) return;
-            
-            if (versionList.classList.contains('show')) {
-                versionList.classList.remove('show');
-                toggleButton.textContent = 'Visa ▼';
-            } else {
-                versionList.classList.add('show');
-                toggleButton.textContent = 'Dölj ▲';
-            }
-        }
-        
         async function loadEntries() {
             try {
                 const response = await fetch('/api/entries');
@@ -576,10 +340,20 @@
                     cacheStatusElement.textContent = cacheStatus === 'HIT' ? '✓' : '○';
                 }
                 
+                const backendStatusElement = document.getElementById('backendStatus');
+                if (backendStatusElement) {
+                    backendStatusElement.textContent = '✓';
+                }
+                
             } catch (error) {
                 console.error('Fel vid laddning av inlägg:', error);
                 document.getElementById('entriesList').innerHTML = 
                     '<div class="error">Kunde inte ladda inlägg. Kontrollera att backend-tjänsten körs.</div>';
+                
+                const backendStatusElement = document.getElementById('backendStatus');
+                if (backendStatusElement) {
+                    backendStatusElement.textContent = '✗';
+                }
             }
         }
         
@@ -634,7 +408,6 @@
         }
         
         function initialize() {
-            trackBuildVersion();
             loadEntries();
             loadStats();
             
