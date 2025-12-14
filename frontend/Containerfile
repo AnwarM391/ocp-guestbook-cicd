@@ -1,0 +1,22 @@
+FROM nginx:alpine
+
+# Install tzdata for timezone support
+RUN apk add --no-cache tzdata
+
+# Copy nginx config
+COPY nginx.conf /etc/nginx/nginx.conf
+
+# Copy the HTML file to temp location
+COPY index.html /tmp/index.html
+
+# Generate build timestamp and inject it into the HTML
+RUN BUILD_TIME=$(TZ=Europe/Stockholm date '+%d %B %Y kl. %H:%M CET') && \
+    echo "=== BUILD TIMESTAMP ===" && \
+    echo "Build timestamp: $BUILD_TIME" && \
+    sed "s|__BUILD_TIMESTAMP__|$BUILD_TIME|g" /tmp/index.html > /usr/share/nginx/html/index.html && \    rm /tmp/index.html && \
+    echo "=== VERIFICATION ===" && \
+    grep -A2 "Byggd:" /usr/share/nginx/html/index.html || echo "Timestamp not found!"
+
+EXPOSE 8080
+
+CMD ["nginx", "-g", "daemon off;"]
